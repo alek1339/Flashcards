@@ -5,7 +5,9 @@ const connectToDatabase = require("./db");
 
 const user = require("./routes/user");
 const profile = require("./routes/profile");
-
+const deck = require("./routes/deck");
+const card = require("./routes/card");
+const review = require("./routes/review");
 
 const cors = require("cors");
 
@@ -28,7 +30,9 @@ connectToDatabase();
 // Routes
 app.use("/user", user);
 app.use("/profile", profile);
-
+app.use("/deck", deck);
+app.use("/card", card);
+app.use("/review", review);
 
 // Start the server
 app.listen(PORT, () => {
