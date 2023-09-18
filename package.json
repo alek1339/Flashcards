@@ -1,0 +1,19 @@
+{
+  "name": "flashcards",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alek1339/Flashcards.git"
+  },
+  "author": "Aleks M",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alek1339/Flashcards/issues"
+  },
+  "homepage": "https://github.com/alek1339/Flashcards#readme"
+}
