@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
@@ -7,8 +7,10 @@ import { logoutUser, tokenLogin } from './store/reducers/authSlice';
 import { getProfile } from './store/reducers/profileSlice';
 
 import Navbar from './components/navbar/Navbar';
+import Home from './pages/home/Home';
 
-import './App.css';
+import './App.scss';
+import CreateDeck from './pages/home/createDeck/CreateDeck';
 
 function App() {
   const dispatch = useDispatch();
@@ -42,13 +44,17 @@ function App() {
     <>
      <BrowserRouter>
         <header>
-          <Navbar />
+         
         </header>
 
         <main>
+        <Navbar />
           <Routes>
-            <Route path='/' element={'<Home />'} />
-            </Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/login' element={<h1>Login</h1>} />
+            <Route path='/register' element={<h1>Register</h1>} />
+            <Route path='/create' element={<CreateDeck />} />
+          </Routes>
         </main>
       </BrowserRouter>
     </>

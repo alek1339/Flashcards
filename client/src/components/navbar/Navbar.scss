@@ -1,5 +1,21 @@
-.navbar{
+@import '../../scss/colors.scss';
+
+.navbar-container{
+    position: relative;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    flex-direction: row;
+    background-color: $light-gray;
+    border-bottom: 1px solid $dark-gray;
+    margin: 0;
+    height: 16px;  /* If you change this, you must change the top padding of the sidebar */
+
     a{
         margin-right: 1rem;
+        display: flex;
+        flex-direction: column;
     }
 }

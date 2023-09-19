@@ -1,0 +1,13 @@
+@import "../../scss//colors.scss";
+
+.sidebar-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding-left: 20px;
+    padding-top: 38px; /* If you change this, you must change the height of the navbar */
+    min-width: 300px;
+    border-right: 1px solid $dark-gray;
+  }
