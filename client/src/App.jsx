@@ -10,6 +10,7 @@ import Navbar from './components/navbar/Navbar';
 import Home from './pages/home/Home';
 
 import './App.scss';
+import CreateDeck from './pages/home/createDeck/CreateDeck';
 
 function App() {
   const dispatch = useDispatch();
@@ -50,7 +51,10 @@ function App() {
         <Navbar />
           <Routes>
             <Route path='/' element={<Home />} />
-            </Routes>
+            <Route path='/login' element={<h1>Login</h1>} />
+            <Route path='/register' element={<h1>Register</h1>} />
+            <Route path='/create' element={<CreateDeck />} />
+          </Routes>
         </main>
       </BrowserRouter>
     </>

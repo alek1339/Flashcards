@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logoutUser } from '../../store/reducers/authSlice';
@@ -25,7 +25,7 @@ const Navbar = () => {
       <Link to='/'><FontAwesomeIcon icon={faHome} /> Home</Link>
       {user ? (
         <>
-                  <Link to='/create'><FontAwesomeIcon icon={faPlus} /> Create</Link>
+          <Link to='/create'><FontAwesomeIcon icon={faPlus} /> Create</Link>
           <Link to='/profile'>
              <FontAwesomeIcon icon={faUser} /> 
              {user.username}
