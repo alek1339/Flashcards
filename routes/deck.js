@@ -29,12 +29,12 @@ router.get('/:id', async (req, res) => {
 // Create new deck
 router.post('/', async (req, res) => {
     try {
-        const { name, description, cards } = req.body;
+        const { name, userId } = req.body;
+        console.log(req.body);
 
         const newDeck = new Deck({
             name,
-            description,
-            cards,
+            userId
         });
 
         const deck = await newDeck.save();
