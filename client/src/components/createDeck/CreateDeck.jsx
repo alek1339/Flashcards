@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 import { useSelector } from 'react-redux';
-import { createDeck } from '../../../store/reducers/deckSlice';
+import { createDeck } from '../../store/reducers/deckSlice';
 import { useDispatch } from 'react-redux';
 
 import './CreateDeck.scss';
@@ -11,7 +11,8 @@ const CreateDeck = () => {
     const dispatch = useDispatch();
 
     const handleCreateDeck = () => {
-        dispatch(createDeck({ deckName, userId: user.id }));
+        console.log('create deck', user);
+        dispatch(createDeck({ name: deckName, userId: user._id }));
     }
 
   return (
@@ -24,7 +25,6 @@ const CreateDeck = () => {
             onChange={(e) => setDeckName(e.target.value)}
         />
         <button onClick={handleCreateDeck}>Create Deck</button>
-        <button>Cancel</button>
     </div>
   )
 }

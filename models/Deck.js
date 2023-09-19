@@ -7,10 +7,14 @@ const deckSchema = new mongoose.Schema({
         minlength: 3,
         maxlength: 99,
     },
-    user: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    cards: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Card',
+    }],
     });
 
 module.exports = mongoose.model('Deck', deckSchema);

@@ -10,7 +10,13 @@ import Navbar from './components/navbar/Navbar';
 import Home from './pages/home/Home';
 
 import './App.scss';
-import CreateDeck from './pages/home/createDeck/CreateDeck';
+import Register from './pages/register/Register';
+import Login from './pages/login/Login';
+import Profile from './pages/profile/Profile';
+import CreateProfile from './pages/createProfile/CreateProfile';
+import ForgottenPassword from './pages/forgottenPassword/ForgottenPassword';
+import PasswordResetPage from './pages/passwordResetPage/PasswordResetPage';
+import Create from './pages/create/Create';
 
 function App() {
   const dispatch = useDispatch();
@@ -51,9 +57,14 @@ function App() {
         <Navbar />
           <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/login' element={<h1>Login</h1>} />
-            <Route path='/register' element={<h1>Register</h1>} />
-            <Route path='/create' element={<CreateDeck />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/create' element={<Create />} />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/create-profile' element={<CreateProfile />} />
+            <Route path='/forgotten-password' element={<ForgottenPassword />} />
+            <Route path='/reset-password/:token' element={<PasswordResetPage />} />
+            <Route path='*' element={<h1>Not Found</h1>} />
           </Routes>
         </main>
       </BrowserRouter>
