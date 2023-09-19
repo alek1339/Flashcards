@@ -6,6 +6,8 @@ import Cookies from 'js-cookie';
 import { logoutUser, tokenLogin } from './store/reducers/authSlice';
 import { getProfile } from './store/reducers/profileSlice';
 
+import { getDecks } from './store/reducers/deckSlice';
+
 import Navbar from './components/navbar/Navbar';
 import Home from './pages/home/Home';
 
@@ -45,6 +47,12 @@ function App() {
       dispatch(getProfile(user._id));
     }
   }, [user, dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      dispatch(getDecks(user._id));
+    }
+  });
 
   return (
     <>

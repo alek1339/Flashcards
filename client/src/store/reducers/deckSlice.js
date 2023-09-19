@@ -4,11 +4,16 @@ const deckSlice = createSlice({
     name: 'deck',
     initialState: {
         deck: {},
+        decks: [],
         error: null,
     },
     reducers: {
         setDeck: (state, action) => {
         state.deck = action.payload;
+        },
+        setDecks: (state, action) => {
+            console.log(action.payload);
+        state.decks = action.payload;
         },
         updateDeckFailure: (state, action) => {
         state.error = action.payload;
@@ -19,6 +24,24 @@ const deckSlice = createSlice({
         },
     },
 });
+
+export const getDecks = (id) => async (dispatch) => {
+    try {
+        const response = await fetch(`http://localhost:1000/deck/user/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        });
+
+        const data = await response.json();
+        console.log(data);
+        dispatch(setDecks(data));
+    } catch (error) {
+        console.error('Deck retrieval failed', error);
+    }
+}
+    
 
 export const createDeck = (formData) => async (dispatch) => {
     try {
@@ -71,6 +94,6 @@ export const getDeck = (id) => async (dispatch) => {
     }
 }
 
-export const { setDeck, updateDeckFailure, updateDeckSuccess } = deckSlice.actions;
+export const { setDeck, updateDeckFailure, updateDeckSuccess, setDecks } = deckSlice.actions;
 
 export default deckSlice.reducer;
