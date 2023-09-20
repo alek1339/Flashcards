@@ -19,6 +19,7 @@ import CreateProfile from './pages/createProfile/CreateProfile';
 import ForgottenPassword from './pages/forgottenPassword/ForgottenPassword';
 import PasswordResetPage from './pages/passwordResetPage/PasswordResetPage';
 import Create from './pages/create/Create';
+import StudyDeck from './pages/studyDeck/StudyDeck';
 
 function App() {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ function App() {
         <Navbar />
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path='/decks/:deckId/study' element={<StudyDeck />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/create' element={<Create />} />
