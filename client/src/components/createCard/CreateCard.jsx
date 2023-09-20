@@ -29,13 +29,13 @@ const CreateCard = () => {
   return (
     <div>
         <h1>Create Card</h1>
-        <input
+        <textarea
             type='text'
             placeholder='Front'
             value={front}
             onChange={(e) => setFront(e.target.value)}
         />
-        <input
+        <textarea
             type='text'
             placeholder='Back'
             value={back}

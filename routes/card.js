@@ -29,12 +29,12 @@ router.get("/:id", async (req, res) => {
 // Create new card
 router.post("/", async (req, res) => {
   try {
-    const { question, answer, deck } = req.body;
+    const { front, back, deckId } = req.body;
 
     const newCard = new Card({
-      question,
-      answer,
-      deck,
+      front,
+      back,
+      deckId,
     });
 
     const card = await newCard.save();
@@ -50,12 +50,12 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
 
     try {
-        const { question, answer, deck } = req.body;
+        const { front, back, deckId } = req.body;
     
         const newCard = {
-        question,
-        answer,
-        deck,
+          front,
+          back,
+          deckId,
         };
     
         const card = await Card.findByIdAndUpdate(
