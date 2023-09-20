@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const Deck = require('../models/Deck');
+const Card = require('../models/Card');
+const Review = require('../models/Review');
 
 // Get all decks
 router.get('/', async (req, res) => {
@@ -39,6 +41,32 @@ router.get('/user/:id', async (req, res) => {
     }
 });
 
+// Route to get both cards in review and new cards for learning
+router.get('/decks/:deckId/cards-for-learning', async (req, res) => {
+    try {
+      const deckId = req.params.deckId;
+      const userId = req.user.id; // Assuming you have user authentication
+  
+      // Find all cards in the specified deck
+      const allCardsInDeck = await Card.find({ deckId });
+  
+      // Find cards in the deck that are not in the user's review queue
+      const cardsNotInReview = [];
+  
+      for (const card of allCardsInDeck) {
+        const review = await Review.findOne({ cardId: card._id, userId });
+        if (!review) {
+          cardsNotInReview.push(card);
+        }
+      }
+  
+      res.json({ cardsInReview: allCardsInDeck, newCardsForLearning: cardsNotInReview });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+
 // Create new deck
 router.post('/', async (req, res) => {
     try {
@@ -60,7 +88,6 @@ router.post('/', async (req, res) => {
 });
 
 // Update deck
-
 router.put('/:id', async (req, res) => {
 
     try {

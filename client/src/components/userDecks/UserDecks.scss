@@ -1,0 +1,10 @@
+@import "../../scss/colors";
+
+.deck-container {
+    h3 {
+        cursor: pointer;
+    }
+    h3:hover {
+        color: $light-blue;
+    }
+}
