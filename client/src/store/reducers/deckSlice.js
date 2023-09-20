@@ -5,6 +5,7 @@ const deckSlice = createSlice({
     initialState: {
         deck: {},
         decks: [],
+        allCardsInDeck: [],
         cardsInReview: [],
         newCardsForLearning: [],
         error: null,
@@ -14,6 +15,7 @@ const deckSlice = createSlice({
             state.deck = action.payload;
         },
         setCardsForLearning: (state, action) => {
+            state.allCardsInDeck = action.payload.allCardsInDeck;
             state.cardsInReview = action.payload.cardsInReview;
             state.newCardsForLearning = action.payload.newCardsForLearning;
         },
@@ -41,7 +43,6 @@ export const getDecks = (id) => async (dispatch) => {
         });
 
         const data = await response.json();
-        console.log(data);
         dispatch(setDecks(data));
     } catch (error) {
         console.error('Deck retrieval failed', error);
@@ -49,9 +50,9 @@ export const getDecks = (id) => async (dispatch) => {
 }
 
 // Get cards in review and new cards for learning
-export const getCardsForLearning = (deckId) => async (dispatch) => {
+export const getCardsForLearning = (deckId,userId) => async (dispatch) => {
     try {
-        const response = await fetch(`http://localhost:1000/deck/decks/${deckId}/cards-for-learning`, {
+        const response = await fetch(`http://localhost:1000/deck/decks/${deckId}/cards-for-learning/${userId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

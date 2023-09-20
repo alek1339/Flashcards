@@ -42,25 +42,28 @@ router.get('/user/:id', async (req, res) => {
 });
 
 // Route to get both cards in review and new cards for learning
-router.get('/decks/:deckId/cards-for-learning', async (req, res) => {
+router.get('/decks/:deckId/cards-for-learning/:userId', async (req, res) => {
     try {
       const deckId = req.params.deckId;
-      const userId = req.user.id; // Assuming you have user authentication
+      const userId = req.params.userId;
   
       // Find all cards in the specified deck
       const allCardsInDeck = await Card.find({ deckId });
   
       // Find cards in the deck that are not in the user's review queue
       const cardsNotInReview = [];
+      const cardsInReview = [];
   
       for (const card of allCardsInDeck) {
         const review = await Review.findOne({ cardId: card._id, userId });
         if (!review) {
           cardsNotInReview.push(card);
+        } else {
+            cardsInReview.push(card);
         }
       }
   
-      res.json({ cardsInReview: allCardsInDeck, newCardsForLearning: cardsNotInReview });
+      res.json({ allCardsInDeck: allCardsInDeck, newCardsForLearning: cardsNotInReview, cardsInReview: cardsInReview });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Server error' });
