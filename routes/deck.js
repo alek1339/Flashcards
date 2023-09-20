@@ -26,6 +26,19 @@ router.get('/:id', async (req, res) => {
     }
 });
 
+// Get deck by user id
+router.get('/user/:id', async (req, res) => {
+    try {
+        const decks = await Deck.find({ userId: req.params.id });
+
+        if (!decks) return res.status(404).json({ msg: 'Decks not found' });
+
+        res.json(decks);
+    } catch (error) {
+        res.status(500).send('Server error' + error);
+    }
+});
+
 // Create new deck
 router.post('/', async (req, res) => {
     try {
