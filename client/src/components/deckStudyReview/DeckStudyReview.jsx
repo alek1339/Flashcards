@@ -7,24 +7,17 @@ import { useParams } from "react-router-dom";
 
 const DeckStudyReview = ({cards}) => {
     const dispatch = useDispatch();
+    const [answer, setAnswer] = useState("");
     const user = useSelector((state) => state.auth.user);
     const { deckId } = useParams();
     const studyCards = cards;
     const [currentCardIndex, setCurrentCardIndex] = useState(0);
-    const cardsInReview = useSelector((state) => state.deck.cardsInReview);
-    const newCardsForLearning = useSelector((state) => state.deck.newCardsForLearning);
-    const numCardsToStudy = 20;
   
     useEffect(() => {
       if (deckId) {
         dispatch(getCardsForLearning(deckId, user._id));
       }
     }, [deckId, dispatch, user._id]);
-  
-    // useEffect(() => {
-    //   const newStudyCards = [...newCardsForLearning.slice(0, numCardsToStudy), ...cardsInReview];
-    //   setStudyCards(newStudyCards);
-    // }, [newCardsForLearning, cardsInReview]);
   
     const nextCard = () => {
       if (currentCardIndex < studyCards.length - 1) {
@@ -34,11 +27,40 @@ const DeckStudyReview = ({cards}) => {
         // You can show a message or take any other action
       }
     };
+
+    const handleCancel = () => {
+        window.location.href = `/`;
+    };
+
+    const handleAnswer = (e) => {
+        e.preventDefault();
+        setAnswer(e.target.value);
+    }
+
+    const handleCorrect = () => {
+        // TODO: dispatch(updateCard(studyCards[currentCardIndex]._id, {answer: answer}));
+        nextCard();
+    };
+
+    const handleIncorrect = () => {
+      // TODO: dispatch(updateCard(studyCards[currentCardIndex]._id, {answer: answer}));
+      nextCard();
+    }
+
+    const handleCheck = () => {
+      // TODO: Check if answer is correct
+      // TODO: dispatch(updateCard(studyCards[currentCardIndex]._id, {answer: answer}));
+      nextCard();
+    }
   
     return (
       <div>
         <Card card={studyCards[currentCardIndex]} />
-        <button onClick={nextCard}>Next Card</button>
+        <textarea onClick={handleAnswer}></textarea>
+        <button onClick={handleCheck}>Check</button>
+        <button onClick={handleCorrect}>Correct</button>
+        <button onClick={handleIncorrect}>Incorrect</button>
+        <button onClick={handleCancel}>Cancel</button>
       </div>
     );
 }
