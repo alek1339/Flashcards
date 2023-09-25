@@ -13,13 +13,9 @@ const reviewSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    interval: {
-        type: Number,
-        required: true,
-    },
     repetitions: {
         type: Number,
-        required: true,
+        default: 1,
     },
 });
 

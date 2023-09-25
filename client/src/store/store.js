@@ -7,12 +7,14 @@ import authSlice from './reducers/authSlice';
 import profileSlice from './reducers/profileSlice';
 import deckSlice from './reducers/deckSlice';
 import cardSlice from './reducers/cardSlice';
+import reviewSlice from './reducers/reviewSlice';
 
 const rootReducer = combineReducers({
   auth: authSlice,
   profile: profileSlice,
   deck: deckSlice,
   card: cardSlice,
+  review: reviewSlice,
 });
 
 const store = configureStore({
