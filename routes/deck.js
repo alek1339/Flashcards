@@ -59,7 +59,16 @@ router.get('/decks/:deckId/cards-for-learning/:userId', async (req, res) => {
         if (!review) {
           cardsNotInReview.push(card);
         } else {
-            cardsInReview.push(card);
+            let updatedCard = {
+                front: card.front,
+                back: card.back,
+                deckId: card.deckId,
+                _id: card._id,
+                repetitions: review.repetitions,
+                reviewId: review._id,
+            };
+
+            cardsInReview.push(updatedCard);
         }
       }
   

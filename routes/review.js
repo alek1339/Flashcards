@@ -3,6 +3,8 @@ const router = express.Router();
 
 const Review = require("../models/Review");
 
+const calculateNextReviewDate = require("../utils/reviewDateCalculator");
+
 // Get all reviews
 router.get("/", async (req, res) => {
   try {
@@ -29,13 +31,15 @@ router.get("/:id", async (req, res) => {
 // Create new review
 router.post("/", async (req, res) => {
   try {
-    const { rating, comment, user, deck } = req.body;
-
+    const { cardId, userId, isCorrectGuess } = req.body;
+    const repetitions = 1;
+    const nextReviewDate = calculateNextReviewDate(repetitions, isCorrectGuess);
+    console.log(nextReviewDate);
     const newReview = new Review({
-      rating,
-      comment,
-      user,
-      deck,
+      cardId,
+      userId,
+      nextReviewDate,
+      repetitions,
     });
 
     const review = await newReview.save();
@@ -51,19 +55,20 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
 
     try {
-        const { rating, comment, user, deck } = req.body;
-    
+        const { cardId, userId, isCorrectGuess, repetitions } = req.body;
+        console.log(req.body);
+        const nextReviewDate = calculateNextReviewDate(repetitions, isCorrectGuess);
+
         const newReview = {
-        rating,
-        comment,
-        user,
-        deck,
+            cardId,
+            userId,
+            nextReviewDate,
+            repetitions: repetitions,
         };
     
         const review = await Review.findByIdAndUpdate(
         req.params.id,
-        newReview,
-        { new: true }
+        newReview
         );
     
         res.json(review);

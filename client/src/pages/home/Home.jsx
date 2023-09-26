@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import HomeSidebar from '../../components/homeSidebar/HomeSidebar';
 import UserDecks from '../../components/userDecks/UserDecks';
 import Sidebarcontainer from '../../components/sidebarContainer/Sidebarcontainer';
@@ -9,22 +8,14 @@ import DeckDetail from '../../components/deckDetail/DeckDetail';
 import './Home.scss';
 
 const Home = () => {
-  const user = useSelector((state) => state.auth.user);
-  const decks = useSelector((state) => state.deck.decks);
-
-  // State to control whether to show DeckDetail or UserDecks
   const [showDeckDetail, setShowDeckDetail] = useState(false);
-
-  // State to store the selected deck (for passing data to DeckDetail)
   const [selectedDeck, setSelectedDeck] = useState(null);
 
-  // Function to handle clicking on a deck
   const handleDeckClick = (deck) => {
     setSelectedDeck(deck);
     setShowDeckDetail(true);
   };
 
-  // Function to go back to UserDecks
   const handleBackToUserDecks = () => {
     setShowDeckDetail(false);
     setSelectedDeck(null);

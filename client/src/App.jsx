@@ -20,6 +20,7 @@ import ForgottenPassword from './pages/forgottenPassword/ForgottenPassword';
 import PasswordResetPage from './pages/passwordResetPage/PasswordResetPage';
 import Create from './pages/create/Create';
 import StudyDeck from './pages/studyDeck/StudyDeck';
+import ReviewDeck from './pages/reviewDeck/ReviewDeck';
 
 function App() {
   const dispatch = useDispatch();
@@ -67,6 +68,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/decks/:deckId/study' element={<StudyDeck />} />
+            <Route path='/decks/:deckId/review' element={<ReviewDeck />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/create' element={<Create />} />

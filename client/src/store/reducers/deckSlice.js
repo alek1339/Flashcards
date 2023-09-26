@@ -20,7 +20,6 @@ const deckSlice = createSlice({
             state.newCardsForLearning = action.payload.newCardsForLearning;
         },
         setDecks: (state, action) => {
-            console.log(action.payload);
             state.decks = action.payload;
         },
         updateDeckFailure: (state, action) => {
