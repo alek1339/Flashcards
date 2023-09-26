@@ -17,8 +17,8 @@ import { STUDY_MODE, REVIEW_MODE } from "../../constants/modes";
 const DeckStudyReview = ({ cards, mode }) => {
   const dispatch = useDispatch();
   const [answer, setAnswer] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
   const user = useSelector((state) => state.auth.user);
-  const cardsInReview = useSelector((state) => state.deck.cardsInReview);
   const { deckId } = useParams();
   const studyCards = cards;
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
@@ -40,9 +40,8 @@ const DeckStudyReview = ({ cards, mode }) => {
   const nextCard = () => {
     if (currentCardIndex < studyCards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
-    } else {
-      // Handle when there are no more cards to study
-      // You can show a message or take any other action
+    } else if(currentCardIndex === studyCards.length - 1) {
+      setCurrentCardIndex(0);
     }
   };
 
@@ -56,7 +55,6 @@ const DeckStudyReview = ({ cards, mode }) => {
   };
 
   const handleCorrect = () => {
-    // TODO: dispatch(updateCard(studyCards[currentCardIndex]._id, {answer: answer}));
     if (mode === studyMode) {
       dispatch(
         createReview({
@@ -66,13 +64,21 @@ const DeckStudyReview = ({ cards, mode }) => {
         })
       );
     } else if (mode === reviewMode) {
-      // TODO: repetition is needed to uncomment this line
       dispatch(updateReviewAction({
         cardId: studyCards[currentCardIndex]._id, 
         userId: user._id, 
         isCorrectGuess: false, 
         repetitions: studyCards[currentCardIndex].repetitions + 1,
       },studyCards[currentCardIndex].reviewId));
+    }
+
+    const updatedStudyCards = studyCards.filter(
+      (card) => card !== studyCards[currentCardIndex]
+    );
+    setCurrentCardIndex(0);
+
+    if (updatedStudyCards.length === 0) {
+      window.location.href = `/`;
     }
 
     nextCard();
@@ -86,12 +92,18 @@ const DeckStudyReview = ({ cards, mode }) => {
       isCorrectGuess: false, 
       repetitions: studyCards[currentCardIndex].repetitions + 1,
     },studyCards[currentCardIndex].reviewId));
+
+    if(currentCardIndex === studyCards.length - 1) {
+      setCurrentCardIndex(0);
+    }
+
     nextCard();
   };
 
   const handleCheck = () => {
     setIsCorrect(isCorrectSentence(answer, studyCards[currentCardIndex].back));
     setIsFlipped(true);
+    setIsChecked(true);
   };
 
   const handleFlip = () => {
@@ -102,6 +114,7 @@ const DeckStudyReview = ({ cards, mode }) => {
     setAnswer("");
     setIsFlipped(false);
     setIsCorrect(false);
+    setIsChecked(false);
   };
 
   return (
@@ -109,8 +122,8 @@ const DeckStudyReview = ({ cards, mode }) => {
       <Card card={studyCards[currentCardIndex]} />
       <textarea value={answer} onChange={handleAnswer}></textarea>
       {isFlipped && <p>{studyCards[currentCardIndex].back}</p>}
-      {isFlipped && isCorrect && <p>Correct!</p>}
-      {isFlipped && !isCorrect && <p>Incorrect!</p>}
+      {isChecked && isCorrect && <p>Correct!</p>}
+      {isChecked && !isCorrect && <p>Incorrect!</p>}
       <button onClick={handleCheck}>Check</button>
       <button onClick={handleCorrect}>Correct</button>
       <button onClick={handleIncorrect}>Incorrect</button>
