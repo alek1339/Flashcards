@@ -40,7 +40,7 @@ const DeckStudyReview = ({ cards, mode }) => {
   const nextCard = () => {
     if (currentCardIndex < studyCards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
-    } else if(currentCardIndex === studyCards.length - 1) {
+    } else if (currentCardIndex === studyCards.length - 1) {
       setCurrentCardIndex(0);
     }
   };
@@ -64,12 +64,17 @@ const DeckStudyReview = ({ cards, mode }) => {
         })
       );
     } else if (mode === reviewMode) {
-      dispatch(updateReviewAction({
-        cardId: studyCards[currentCardIndex]._id, 
-        userId: user._id, 
-        isCorrectGuess: false, 
-        repetitions: studyCards[currentCardIndex].repetitions + 1,
-      },studyCards[currentCardIndex].reviewId));
+      dispatch(
+        updateReviewAction(
+          {
+            cardId: studyCards[currentCardIndex]._id,
+            userId: user._id,
+            isCorrectGuess: false,
+            repetitions: studyCards[currentCardIndex].repetitions + 1,
+          },
+          studyCards[currentCardIndex].reviewId
+        )
+      );
     }
 
     const updatedStudyCards = studyCards.filter(
@@ -85,15 +90,21 @@ const DeckStudyReview = ({ cards, mode }) => {
   };
 
   const handleIncorrect = () => {
-    // TODO: repetition is needed to uncomment this line
-    dispatch(updateReviewAction({
-      cardId: studyCards[currentCardIndex]._id, 
-      userId: user._id, 
-      isCorrectGuess: false, 
-      repetitions: studyCards[currentCardIndex].repetitions + 1,
-    },studyCards[currentCardIndex].reviewId));
+    if (mode === reviewMode) {
+      dispatch(
+        updateReviewAction(
+          {
+            cardId: studyCards[currentCardIndex]._id,
+            userId: user._id,
+            isCorrectGuess: false,
+            repetitions: studyCards[currentCardIndex].repetitions + 1,
+          },
+          studyCards[currentCardIndex].reviewId
+        )
+      );
+    }
 
-    if(currentCardIndex === studyCards.length - 1) {
+    if (currentCardIndex === studyCards.length - 1) {
       setCurrentCardIndex(0);
     }
 
@@ -124,10 +135,17 @@ const DeckStudyReview = ({ cards, mode }) => {
       {isFlipped && <p>{studyCards[currentCardIndex].back}</p>}
       {isChecked && isCorrect && <p>Correct!</p>}
       {isChecked && !isCorrect && <p>Incorrect!</p>}
-      <button onClick={handleCheck}>Check</button>
-      <button onClick={handleCorrect}>Correct</button>
-      <button onClick={handleIncorrect}>Incorrect</button>
-      <button onClick={handleFlip}>Flip</button>
+      {!isFlipped && <button onClick={handleCheck}>Check</button>}
+
+      {isFlipped && (
+        <>
+          <button onClick={handleCorrect}>Correct</button>
+          <button onClick={handleIncorrect}>Incorrect</button>
+        </>
+      )}
+
+      {!isFlipped && <button onClick={handleFlip}>Flip</button>}
+
       <button onClick={nextCard}>Next</button>
       <button onClick={handleCancel}>Cancel</button>
     </div>
