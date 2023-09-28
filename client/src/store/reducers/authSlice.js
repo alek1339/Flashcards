@@ -39,6 +39,8 @@ export const registerUser = (userData) => async (dispatch) => {
     });
     const data = await response.json();
     dispatch(setUser(data.user));
+
+    window.location.href = '/login';
   } catch (error) {
     console.error('Registration failed', error);
     // Handle registration failure (e.g., show an error message)
@@ -66,6 +68,8 @@ export const loginUser = (userData) => async (dispatch) => {
      }
       
       dispatch(setUser(data.user));
+
+      window.location.href = '/';
     } catch (error) {
       console.error('Login failed', error);
       // TODO: Handle login failure (e.g., show an error message)
