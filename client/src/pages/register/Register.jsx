@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../store/reducers/authSlice';
+import  useAuthRedirect from '../../hooks/useAuthRedirect';
 
 const Register = () => {
   const dispatch = useDispatch();
@@ -11,13 +12,14 @@ const Register = () => {
     password2: ''
   });
 
+  useAuthRedirect()
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Dispatch the registerUser action with the formData
     dispatch(registerUser(formData));
   };
 
