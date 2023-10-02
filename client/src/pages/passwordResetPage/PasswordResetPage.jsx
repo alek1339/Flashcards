@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { resetPassword } from '../../api/resetPasswordRequest';
+import useAuthRedirect from '../../hooks/useAuthRedirect';
 
 function PasswordResetPage() {
   const { token } = useParams();
 
-  // Define state variables for the new password and confirmation
+  useAuthRedirect()
+
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [resetSuccess, setResetSuccess] = useState(false);

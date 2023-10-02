@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { sendPasswordResetEmail } from '../../store/reducers/authSlice';
+import  useAuthRedirect  from '../../hooks/useAuthRedirect';
 
 const ForgottenPassword = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
+  useAuthRedirect()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
