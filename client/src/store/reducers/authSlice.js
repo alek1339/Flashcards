@@ -7,10 +7,14 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: null,
+    error: null,
   },
   reducers: {
       setUser: (state, action) => {
         state.user = action.payload;
+      },
+      setAuthError: (state, action) => {
+        state.error = action.payload;
       },
       sendPasswordResetEmailFailure: (state, action) => {
         state.error = action.payload;
@@ -25,7 +29,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setUser, logoutUser } = authSlice.actions;
+export const { setUser, logoutUser, setAuthError } = authSlice.actions;
 
 export const registerUser = (userData) => async (dispatch) => {
   try {
@@ -63,11 +67,13 @@ export const loginUser = (userData) => async (dispatch) => {
      if (token) {
         Cookies.set('authToken', token);
         dispatch(getProfile(data.user.id));
+        window.location.href = '/';
+     } else {
+        dispatch(setAuthError(data.msg));
+        console.log(data.msg);
      }
-      
       dispatch(setUser(data.user));
 
-      window.location.href = '/';
     } catch (error) {
       console.error('Login failed', error);
       // TODO: Handle login failure (e.g., show an error message)
