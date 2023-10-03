@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../store/reducers/authSlice';
 import  useAuthRedirect from '../../hooks/useAuthRedirect';
 import AuthLinks from '../../components/authLinks/AuthLinks';
-import CustomModal from '../../components/customModal/CustomModal';
 
 const Login = () => {
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.auth.error)
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -20,7 +20,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser(formData));
+    dispatch(loginUser(formData))
   };
 
   return (
@@ -43,6 +43,7 @@ const Login = () => {
         />
         <button type="submit">Login</button>
       </form>
+      {error && <p className='error'>{error}</p>}
       <AuthLinks />
     </div>
   );

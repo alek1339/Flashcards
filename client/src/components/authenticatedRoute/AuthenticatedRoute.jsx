@@ -6,11 +6,9 @@ import PropTypes from "prop-types";
 
 const AuthenticatedRoute = ({children}) => {
     const user = useSelector((state) => state.auth.user);
-    const state = useSelector((state) => state);
     let location = useLocation();
 
     useEffect(() => {
-        console.log(state);
         if(!user) {
            window.location.href = "/login";
         }

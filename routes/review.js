@@ -34,7 +34,6 @@ router.post("/", async (req, res) => {
     const { cardId, userId, isCorrectGuess } = req.body;
     const repetitions = 1;
     const nextReviewDate = calculateNextReviewDate(repetitions, isCorrectGuess);
-    console.log(nextReviewDate);
     const newReview = new Review({
       cardId,
       userId,

@@ -46,6 +46,7 @@ router.get('/decks/:deckId/cards-for-learning/:userId', async (req, res) => {
     try {
       const deckId = req.params.deckId;
       const userId = req.params.userId;
+      const currentDate = Date.now();
   
       // Find all cards in the specified deck
       const allCardsInDeck = await Card.find({ deckId });
@@ -53,12 +54,14 @@ router.get('/decks/:deckId/cards-for-learning/:userId', async (req, res) => {
       // Find cards in the deck that are not in the user's review queue
       const cardsNotInReview = [];
       const cardsInReview = [];
+    
   
       for (const card of allCardsInDeck) {
         const review = await Review.findOne({ cardId: card._id, userId });
+
         if (!review) {
           cardsNotInReview.push(card);
-        } else {
+        } else if (review.nextReviewDate <= currentDate){
             let updatedCard = {
                 front: card.front,
                 back: card.back,
@@ -74,7 +77,6 @@ router.get('/decks/:deckId/cards-for-learning/:userId', async (req, res) => {
   
       res.json({ allCardsInDeck: allCardsInDeck, newCardsForLearning: cardsNotInReview, cardsInReview: cardsInReview });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ message: 'Server error' });
     }
   });
