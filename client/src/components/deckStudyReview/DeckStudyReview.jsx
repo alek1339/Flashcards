@@ -4,6 +4,7 @@ import { getCardsForLearning } from "../../store/reducers/deckSlice";
 import Card from "../card/Card";
 import { useParams } from "react-router-dom";
 import { isCorrectSentence } from "../../utils/sentenceCorrector";
+import TextareaInput from "../textAreaInput/TextAreaInput";
 
 import {
   createReview,
@@ -13,6 +14,8 @@ import {
 import PropTypes from "prop-types";
 
 import { STUDY_MODE, REVIEW_MODE } from "../../constants/modes";
+
+import "./DeckStudyReview.scss";
 
 const DeckStudyReview = ({ cards, mode }) => {
   const dispatch = useDispatch();
@@ -129,9 +132,11 @@ const DeckStudyReview = ({ cards, mode }) => {
   };
 
   return (
-    <div>
-      <Card card={studyCards[currentCardIndex]} />
-      <textarea value={answer} onChange={handleAnswer}></textarea>
+    <div className='deckstudyreview-container'>
+      <div onClick={handleFlip}>
+        <Card card={studyCards[currentCardIndex]} />
+      </div>
+      <TextareaInput value={answer} onChange={handleAnswer} />
       {isFlipped && <p>{studyCards[currentCardIndex].back}</p>}
       {isChecked && isCorrect && <p>Correct!</p>}
       {isChecked && !isCorrect && <p>Incorrect!</p>}

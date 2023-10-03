@@ -26,15 +26,16 @@ import AuthenticatedRoute from "./components/authenticatedRoute/AuthenticatedRou
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const location = window.location.pathname;
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
 
   useEffect(() => {
-    if (user) {
-      setIsAuthenticated(true);
+    if(!location.startsWith("/decks/") && (!location.endsWith("/study") || !location.endsWith("/review"))){
+      setIsNavbarVisible(true);
     } else {
-      setIsAuthenticated(false);
+      setIsNavbarVisible(false);
     }
-  });
+  }, [location]);
 
   useEffect(() => {
     const token = Cookies.get("authToken");
@@ -68,10 +69,9 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <header></header>
+        <header> {isNavbarVisible && <Navbar />}</header>
 
         <main>
-          <Navbar />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route
