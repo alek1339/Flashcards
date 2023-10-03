@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { loginUser } from '../../store/reducers/authSlice';
 import  useAuthRedirect from '../../hooks/useAuthRedirect';
 import AuthLinks from '../../components/authLinks/AuthLinks';
-import CustomModal from '../../components/customModal/CustomModal';
 
 const Login = () => {
   const dispatch = useDispatch();
