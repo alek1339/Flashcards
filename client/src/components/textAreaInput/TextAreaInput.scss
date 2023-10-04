@@ -1,0 +1,22 @@
+@import '../../scss/colors.scss';
+
+.textarea-input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid $dark-gray;
+  background-color: $light-gray;
+  color: $dark-blue;
+  width: 90%;
+}
+
+.textarea-small {
+  height: 100px;
+}
+
+.textarea-medium {
+  height: 200px;
+}
+
+.textarea-large {
+  height: 300px;
+}

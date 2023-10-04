@@ -1,13 +1,11 @@
-import { useState } from "react";
-import { shape, string } from "prop-types";
+import { shape, string, func } from "prop-types";
 
-const Card = ({ card }) => {
-  const [showBack, setShowBack] = useState(false);
+import "./Card.scss";
 
+const Card = ({ card, onClick }) => {
   return (
-    <div onClick={() => setShowBack(true)} className="card">
+    <div className="card" onClick={onClick}>
       <p>{card && card.front}</p>
-      <p>{showBack && card.back}</p>
     </div>
   );
 };
@@ -17,6 +15,7 @@ Card.propTypes = {
     front: string,
     back: string,
   }),
+  onClick: func,
 };
 
 export default Card;

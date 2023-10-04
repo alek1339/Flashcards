@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import { logoutUser, tokenLogin } from "./store/reducers/authSlice";
@@ -26,15 +26,7 @@ import AuthenticatedRoute from "./components/authenticatedRoute/AuthenticatedRou
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-  });
 
   useEffect(() => {
     const token = Cookies.get("authToken");
@@ -68,11 +60,12 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <header></header>
+      <header> <Navbar /></header>
+      <main>
+        <Routes>
+          
 
-        <main>
-          <Navbar />
-          <Routes>
+
             <Route path="/" element={<Home />} />
             <Route
               path="/decks/:deckId/study"
@@ -122,7 +115,8 @@ function App() {
               element={<PasswordResetPage />}
             />
             <Route path="*" element={<h1>Not Found</h1>} />
-          </Routes>
+
+        </Routes>
         </main>
       </BrowserRouter>
     </>
