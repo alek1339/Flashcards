@@ -1,6 +1,30 @@
+@import "../../scss/_colors.scss";
+
 .deckstudyreview-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 100px;
+
+    .flashcard-back-txt {
+        font-size: 18px;
+        color: $gray;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        margin-top: 40px;
+
+        button {
+            margin: 0 10px;
+        }
+    }
+
+    &__card {
+        margin-bottom: 40px;
+    }
 }

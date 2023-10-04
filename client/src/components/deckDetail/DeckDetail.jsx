@@ -3,6 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCardsForLearning } from "../../store/reducers/deckSlice";
 import { Link } from "react-router-dom";
 import PropTypes, { shape, string } from "prop-types";
+import Button from "../button/Button";
+
+import { BUTTONS } from "../../constants/buttonClasses";
+
+import "./DeckDetail.scss";
 
 const DeckDetail = ({ deck, onBack }) => {
   const dispatch = useDispatch();
@@ -11,6 +16,8 @@ const DeckDetail = ({ deck, onBack }) => {
   const cardsInReview = useSelector((state) => state.deck.cardsInReview);
   const [isReviewButtonDisabled, setIsReviewButtonDisabled] = useState(true);
   const [isStudyButtonDisabled, setIsStudyButtonDisabled] = useState(true);
+  const primaryButton = BUTTONS.PRIMARY;
+  const secondaryButton = BUTTONS.SECONDARY;
 
   const newCardsForLearning = useSelector(
     (state) => state.deck.newCardsForLearning
@@ -35,7 +42,7 @@ const DeckDetail = ({ deck, onBack }) => {
   }, [cardsInReview]);
 
   return (
-    <div>
+    <div className='deckdetail-container'>
       {deck && (
         <div>
           <h1>{deck.name}</h1>
@@ -44,14 +51,14 @@ const DeckDetail = ({ deck, onBack }) => {
           <h2>Review</h2>
           <p>{cardsInReview ? cardsInReview.length : 0}</p>
           <Link to={`/decks/${deck._id}/review`}>
-            <button disabled={isReviewButtonDisabled}>Review</button>
+            <Button isDisabled={isReviewButtonDisabled} label={"Review"} className={primaryButton}/>
           </Link>
           <h2>New</h2>
           <p>{newCardsForLearning ? newCardsForLearning.length : 0}</p>
-          <Link to={`/decks/${deck._id}/study`}>
-            <button disabled={isStudyButtonDisabled}>Study</button>
+          <Link className={'study-btn'} to={`/decks/${deck._id}/study`}>
+            <Button isDisabled={isStudyButtonDisabled}  label={"Study"} className={primaryButton} />
           </Link>
-          <button onClick={onBack}>Back to Decks</button>
+          <Button onClick={onBack} label={"Back"} className={secondaryButton} />
         </div>
       )}
     </div>

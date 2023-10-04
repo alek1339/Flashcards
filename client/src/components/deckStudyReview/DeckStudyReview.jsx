@@ -11,13 +11,17 @@ import {
   updateReviewAction,
 } from "../../store/reducers/reviewSlice";
 
+import { BUTTONS } from "../../constants/buttonClasses";
+import { TEXT_AREA } from "../../constants/textAreaClasses";
+
 import PropTypes from "prop-types";
 
 import { STUDY_MODE, REVIEW_MODE } from "../../constants/modes";
+import Button from "../button/Button";
 
 import "./DeckStudyReview.scss";
 
-const DeckStudyReview = ({ cards, mode }) => {
+const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
   const dispatch = useDispatch();
   const [answer, setAnswer] = useState("");
   const [isChecked, setIsChecked] = useState(false);
@@ -29,6 +33,13 @@ const DeckStudyReview = ({ cards, mode }) => {
   const [isCorrect, setIsCorrect] = useState(false);
   const studyMode = STUDY_MODE;
   const reviewMode = REVIEW_MODE;
+  const primaryButton = BUTTONS.PRIMARY;
+  const secondaryButton = BUTTONS.SECONDARY;
+  const largeTextArea = TEXT_AREA.LARGE;
+
+  if(!cards || cards.length === 0) {
+    window.location.href = `/`;
+  }
 
   useEffect(() => {
     if (deckId) {
@@ -78,6 +89,7 @@ const DeckStudyReview = ({ cards, mode }) => {
           studyCards[currentCardIndex].reviewId
         )
       );
+      onCardReviewed(studyCards[currentCardIndex]._id);
     }
 
     const updatedStudyCards = studyCards.filter(
@@ -132,27 +144,54 @@ const DeckStudyReview = ({ cards, mode }) => {
   };
 
   return (
-    <div className='deckstudyreview-container'>
-      <div onClick={handleFlip}>
-        <Card card={studyCards[currentCardIndex]} />
+    <div className="deckstudyreview-container">
+      <div className='deckstudyreview-container__card' onClick={handleFlip}>
+        <Card card={studyCards[currentCardIndex]} onClick={handleFlip} />
       </div>
-      <TextareaInput value={answer} onChange={handleAnswer} />
-      {isFlipped && <p>{studyCards[currentCardIndex].back}</p>}
+      <TextareaInput value={answer} onChange={handleAnswer} className={largeTextArea}/>
+      {isFlipped && <p className='flashcard-back-txt'>{studyCards[currentCardIndex] && studyCards[currentCardIndex].back}</p>}
       {isChecked && isCorrect && <p>Correct!</p>}
       {isChecked && !isCorrect && <p>Incorrect!</p>}
-      {!isFlipped && <button onClick={handleCheck}>Check</button>}
 
-      {isFlipped && (
-        <>
-          <button onClick={handleCorrect}>Correct</button>
-          <button onClick={handleIncorrect}>Incorrect</button>
-        </>
-      )}
+      <div className="deckstudyreview-container__buttons">
+        {!isFlipped && (
+          <Button
+            onClick={handleCheck}
+            label={"Check"}
+            className={primaryButton}
+          />
+        )}
 
-      {!isFlipped && <button onClick={handleFlip}>Flip</button>}
+        {isFlipped && (
+          <>
+            <Button
+              onClick={handleCorrect}
+              label={"Correct"}
+              className={primaryButton}
+            />
+            <Button
+              onClick={handleIncorrect}
+              label={"Incorrect"}
+              className={secondaryButton}
+            />
+          </>
+        )}
 
-      <button onClick={nextCard}>Next</button>
-      <button onClick={handleCancel}>Cancel</button>
+        {!isFlipped && (
+          <Button
+            onClick={handleFlip}
+            label={"Flip"}
+            className={secondaryButton}
+          />
+        )}
+
+        <Button onClick={nextCard} label={"Next"} className={primaryButton} />
+        <Button
+          onClick={handleCancel}
+          label={"Cancel"}
+          className={secondaryButton}
+        />
+      </div>
     </div>
   );
 };
@@ -160,6 +199,7 @@ const DeckStudyReview = ({ cards, mode }) => {
 DeckStudyReview.propTypes = {
   cards: PropTypes.array,
   mode: PropTypes.string,
+  onCardReviewed: PropTypes.func,
 };
 
 export default DeckStudyReview;

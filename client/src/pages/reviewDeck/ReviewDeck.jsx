@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCardsForLearning } from '../../store/reducers/deckSlice';
 import { useParams } from 'react-router-dom';
@@ -11,6 +11,8 @@ const Review = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const cardsInReview = useSelector((state) => state.deck.cardsInReview);
+  const [filteredCardsInReview, setFilteredCardsInReview] = useState(cardsInReview);
+
   const { deckId } = useParams();
   const mode = REVIEW_MODE;
 
@@ -20,8 +22,13 @@ const Review = () => {
     }
   }, [deckId, dispatch, user._id]);
 
+  const removeCardFromReview = (cardId) => {
+    const updatedCards = filteredCardsInReview.filter((card) => card._id !== cardId);
+    setFilteredCardsInReview(updatedCards);
+  };
+
   return (
-    <DeckStudyReview cards={cardsInReview} mode={mode}/>
+    <DeckStudyReview cards={filteredCardsInReview} mode={mode} onCardReviewed={removeCardFromReview}/>
   )
 }
 
