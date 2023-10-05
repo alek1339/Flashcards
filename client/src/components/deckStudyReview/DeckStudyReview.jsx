@@ -5,6 +5,7 @@ import Card from "../card/Card";
 import { useParams } from "react-router-dom";
 import { isCorrectSentence } from "../../utils/sentenceCorrector";
 import TextareaInput from "../textAreaInput/TextAreaInput";
+import CustomModal from "../customModal/CustomModal";
 
 import {
   createReview,
@@ -36,16 +37,20 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
   const primaryButton = BUTTONS.PRIMARY;
   const secondaryButton = BUTTONS.SECONDARY;
   const largeTextArea = TEXT_AREA.LARGE;
-
-  if(!cards || cards.length === 0) {
-    window.location.href = `/`;
-  }
+  const msg = reviewMode === mode ? 'All cards has been reviewed!' : 'All cards has been studied';
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (deckId) {
       dispatch(getCardsForLearning(deckId, user._id));
     }
   }, [deckId, dispatch, user._id]);
+
+  useEffect(() => {
+    if (studyCards.length === 0) {
+      setIsModalOpen(true);
+    }
+  }, [studyCards]);
 
   useEffect(() => {
     resetValues();
@@ -89,19 +94,16 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
           studyCards[currentCardIndex].reviewId
         )
       );
-      onCardReviewed(studyCards[currentCardIndex]._id);
+     
     }
+    onCardReviewed(studyCards[currentCardIndex]._id);
 
-    const updatedStudyCards = studyCards.filter(
-      (card) => card !== studyCards[currentCardIndex]
-    );
     setCurrentCardIndex(0);
+    resetValues();
+  };
 
-    if (updatedStudyCards.length === 0) {
-      window.location.href = `/`;
-    }
-
-    nextCard();
+  const onCloseModal = () => {
+    window.location.href = `/`;
   };
 
   const handleIncorrect = () => {
@@ -124,6 +126,7 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
     }
 
     nextCard();
+    resetValues();
   };
 
   const handleCheck = () => {
@@ -181,7 +184,7 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
           <Button
             onClick={handleFlip}
             label={"Flip"}
-            className={secondaryButton}
+            className={primaryButton}
           />
         )}
 
@@ -192,6 +195,7 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
           className={secondaryButton}
         />
       </div>
+      {isModalOpen && <CustomModal message={msg} onClose={onCloseModal} closeLabel={'Go to your Decks!'}/>}
     </div>
   );
 };
