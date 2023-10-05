@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import Button from '../button/Button';
-import { BUTTONS } from '../../constants/buttonClasses';
-import PropTypes from 'prop-types';
-import './CustomModal.scss';
+import { useState } from "react";
+import Button from "../button/Button";
+import { BUTTONS } from "../../constants/buttonClasses";
+import PropTypes from "prop-types";
+import "./CustomModal.scss";
 
 function CustomModal({ message, onClose, closeLabel }) {
   const [showModal, setShowModal] = useState(true);
@@ -19,7 +19,11 @@ function CustomModal({ message, onClose, closeLabel }) {
         <div className="custom-modal">
           <div className="modal-content">
             <p>{message}</p>
-           <Button onClick={handleClose} label={closeLabel} className={primaryButton}/>
+            <Button
+              onClick={handleClose}
+              label={closeLabel}
+              className={primaryButton}
+            />
           </div>
         </div>
       )}
@@ -34,7 +38,7 @@ CustomModal.propTypes = {
 };
 
 CustomModal.defaultProps = {
-  closeLabel: 'Close',
+  closeLabel: "Close",
 };
 
 export default CustomModal;

@@ -28,7 +28,6 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
   const [isChecked, setIsChecked] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const { deckId } = useParams();
-  const studyCards = cards;
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -37,29 +36,32 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
   const primaryButton = BUTTONS.PRIMARY;
   const secondaryButton = BUTTONS.SECONDARY;
   const largeTextArea = TEXT_AREA.LARGE;
-  const msg = reviewMode === mode ? 'All cards has been reviewed!' : 'All cards has been studied';
+  const msg =
+    reviewMode === mode
+      ? "All cards has been reviewed!"
+      : "All cards has been studied";
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (deckId) {
+    if (deckId && user) {
       dispatch(getCardsForLearning(deckId, user._id));
     }
-  }, [deckId, dispatch, user._id]);
+  }, [deckId, dispatch, user]);
 
   useEffect(() => {
-    if (studyCards.length === 0) {
+    if (cards.length === 0) {
       setIsModalOpen(true);
     }
-  }, [studyCards]);
+  }, [cards]);
 
   useEffect(() => {
     resetValues();
   }, [currentCardIndex]);
 
   const nextCard = () => {
-    if (currentCardIndex < studyCards.length - 1) {
+    if (currentCardIndex < cards.length - 1) {
       setCurrentCardIndex(currentCardIndex + 1);
-    } else if (currentCardIndex === studyCards.length - 1) {
+    } else if (currentCardIndex === cards.length - 1) {
       setCurrentCardIndex(0);
     }
   };
@@ -77,7 +79,7 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
     if (mode === studyMode) {
       dispatch(
         createReview({
-          cardId: studyCards[currentCardIndex]._id,
+          cardId: cards[currentCardIndex]._id,
           userId: user._id,
           isCorrectGuess: true,
         })
@@ -86,17 +88,16 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
       dispatch(
         updateReviewAction(
           {
-            cardId: studyCards[currentCardIndex]._id,
+            cardId: cards[currentCardIndex]._id,
             userId: user._id,
             isCorrectGuess: false,
-            repetitions: studyCards[currentCardIndex].repetitions + 1,
+            repetitions: cards[currentCardIndex].repetitions + 1,
           },
-          studyCards[currentCardIndex].reviewId
+          cards[currentCardIndex].reviewId
         )
       );
-     
     }
-    onCardReviewed(studyCards[currentCardIndex]._id);
+    onCardReviewed(cards[currentCardIndex]._id);
 
     setCurrentCardIndex(0);
     resetValues();
@@ -111,17 +112,17 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
       dispatch(
         updateReviewAction(
           {
-            cardId: studyCards[currentCardIndex]._id,
+            cardId: cards[currentCardIndex]._id,
             userId: user._id,
             isCorrectGuess: false,
-            repetitions: studyCards[currentCardIndex].repetitions + 1,
+            repetitions: cards[currentCardIndex].repetitions + 1,
           },
-          studyCards[currentCardIndex].reviewId
+          cards[currentCardIndex].reviewId
         )
       );
     }
 
-    if (currentCardIndex === studyCards.length - 1) {
+    if (currentCardIndex === cards.length - 1) {
       setCurrentCardIndex(0);
     }
 
@@ -130,7 +131,7 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
   };
 
   const handleCheck = () => {
-    setIsCorrect(isCorrectSentence(answer, studyCards[currentCardIndex].back));
+    setIsCorrect(isCorrectSentence(answer, cards[currentCardIndex].back));
     setIsFlipped(true);
     setIsChecked(true);
   };
@@ -148,13 +149,20 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
 
   return (
     <div className="deckstudyreview-container">
-      <div className='deckstudyreview-container__card' onClick={handleFlip}>
-        <Card card={studyCards[currentCardIndex]} onClick={handleFlip} />
+      <div className="deckstudyreview-container__card" onClick={handleFlip}>
+        <Card card={cards[currentCardIndex]} onClick={handleFlip} />
       </div>
-      <TextareaInput value={answer} onChange={handleAnswer} className={largeTextArea}/>
-      {isFlipped && <p className='flashcard-back-txt'>{studyCards[currentCardIndex] && studyCards[currentCardIndex].back}</p>}
-      {isChecked && isCorrect && <p>Correct!</p>}
-      {isChecked && !isCorrect && <p>Incorrect!</p>}
+      <TextareaInput
+        value={answer}
+        onChange={handleAnswer}
+        className={largeTextArea}
+      />
+      {isFlipped && (
+        <p className="flashcard-back-txt">
+          {cards[currentCardIndex] && cards[currentCardIndex].back}
+        </p>
+      )}
+      {isChecked && (isCorrect ? <p>Correct!</p> : <p>Incorrect!</p>)}
 
       <div className="deckstudyreview-container__buttons">
         {!isFlipped && (
@@ -195,7 +203,13 @@ const DeckStudyReview = ({ cards, mode, onCardReviewed }) => {
           className={secondaryButton}
         />
       </div>
-      {isModalOpen && <CustomModal message={msg} onClose={onCloseModal} closeLabel={'Go to your Decks!'}/>}
+      {isModalOpen && (
+        <CustomModal
+          message={msg}
+          onClose={onCloseModal}
+          closeLabel={"Go to your Decks!"}
+        />
+      )}
     </div>
   );
 };

@@ -17,10 +17,10 @@ const Review = () => {
   const mode = REVIEW_MODE;
 
   useEffect(() => {
-    if (deckId) {
+    if (deckId && user) {
       dispatch(getCardsForLearning(deckId, user._id));
     }
-  }, [deckId, dispatch, user._id]);
+  }, [deckId, dispatch, user]);
 
   const removeCardFromReview = (cardId) => {
     const updatedCards = filteredCardsInReview.filter((card) => card._id !== cardId);

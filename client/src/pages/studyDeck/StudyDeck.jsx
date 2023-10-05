@@ -14,15 +14,14 @@ const StudyDeck = () => {
     const mode = STUDY_MODE;
   
     useEffect(() => {
-      if (deckId) {
+      if (deckId && user) {
         dispatch(getCardsForLearning(deckId, user._id));
       }
-    }, [deckId, dispatch, user._id]);
+    }, [deckId, dispatch, user]);
 
     const removeCardFromLearning = (cardId) => {
       const updatedCards = filteredCardsInLearning.filter((card) => card._id !== cardId);
       setFilteredCardsInLearning(updatedCards);
-      console.log('updatedCards', updatedCards);
     }
   
     return (
