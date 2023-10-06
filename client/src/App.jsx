@@ -27,7 +27,6 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
 
-
   useEffect(() => {
     const token = Cookies.get("authToken");
     if (token) {
@@ -37,8 +36,6 @@ function App() {
       if (decodedToken.exp < currentTime) {
         dispatch(logoutUser());
       }
-
-      // TODO: dispatch the loginUser action with the token
       dispatch(tokenLogin({ token }));
     } else {
       dispatch(logoutUser());
@@ -60,12 +57,12 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      <header> <Navbar /></header>
-      <main>
-        <Routes>
-          
-
-
+        <header>
+          {" "}
+          <Navbar />
+        </header>
+        <main>
+          <Routes>
             <Route path="/" element={<Home />} />
             <Route
               path="/decks/:deckId/study"
@@ -115,8 +112,7 @@ function App() {
               element={<PasswordResetPage />}
             />
             <Route path="*" element={<h1>Not Found</h1>} />
-
-        </Routes>
+          </Routes>
         </main>
       </BrowserRouter>
     </>

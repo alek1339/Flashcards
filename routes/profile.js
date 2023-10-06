@@ -19,7 +19,7 @@ router.get('/:id', async (req, res) => {
 
     try {
         const profile = await Profile.findOne({user: req.params.id});
-        if (!profile) return res.status(404).json({ msg: 'Profile not found' });
+        if (!profile) return res.json({ msg: 'Profile not found' });
 
         res.json(profile);
     } catch (error) {
